@@ -1,73 +1,107 @@
-# Welcome to your Lovable project
+# 🌍 Global SDG Tracker
 
-## Project info
+> **"Visualize. Analyze. Act."**  
+> Empowering the world to track progress toward the **United Nations Sustainable Development Goals (SDGs)** through data, AI, and design.
 
-**URL**: https://lovable.dev/projects/70fbc340-1897-41f7-8e47-5a75a497aff0
+---
 
-## How can I edit this code?
+## 🚀 Overview
 
-There are several ways of editing your application.
+**Global SDG Tracker** is an **AI-powered web application** that allows users to explore and compare **global progress on the 17 UN Sustainable Development Goals (SDGs)**.  
+With stunning visualizations, interactive dashboards, and an intelligent SDG assistant, it transforms raw sustainability data into actionable insights.
 
-**Use Lovable**
+Built for awareness, policy impact, and education — the project aims to make sustainability **beautiful, transparent, and accessible**.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/70fbc340-1897-41f7-8e47-5a75a497aff0) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🎯 Purpose
 
-**Use your preferred IDE**
+🌱 **Why?**  
+The UN’s SDGs are the blueprint for a better world. But most data is buried in reports.  
+**Global SDG Tracker** bridges that gap — making progress **interactive, AI-analyzed, and visually engaging**.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+---
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## ✨ Features
 
-Follow these steps:
+### 🧭 1. Interactive Dashboard
+- 🌍 **Select any country** to view SDG progress  
+- 🎯 **17 SDG Scorecards** – color-coded by achievement  
+- 📊 **Trend Charts** – visualize year-by-year progress  
+- 🗺️ **Choropleth Map** – see global/regional comparisons  
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### 🤖 2. AI SDG Assistant
+- Ask natural language questions:
+  - “How is India performing in SDG 13?”
+  - “Which countries lead in SDG 4?”
+  - “What are top 3 lagging SDGs globally?”
+- Get **AI-generated insights, suggestions, and summaries**
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### 🏆 3. Leaderboard & Comparisons
+- Rank countries by **overall SDG index or specific goals**  
+- Filter by **region or year**
 
-# Step 3: Install the necessary dependencies.
-npm i
+### 📈 4. Animated Trends
+- Timeline view from **2015 → 2025**  
+- Watch **global progress evolve** with smooth transitions
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+### 💡 5. Actionable Insights
+- AI identifies **strong & weak SDGs** per country  
+- Suggests **policy focus areas & improvements**
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 🌐 UN SDGs Covered
 
-**Use GitHub Codespaces**
+| Goal | Title | Icon |
+|------|-------|------|
+| 1 | No Poverty | 🧑‍🤝‍🧑 |
+| 2 | Zero Hunger | 🌾 |
+| 3 | Good Health and Well-being | ❤️ |
+| 4 | Quality Education | 🎓 |
+| 5 | Gender Equality | 🚺 |
+| 6 | Clean Water and Sanitation | 💧 |
+| 7 | Affordable and Clean Energy | ⚡ |
+| 8 | Decent Work and Economic Growth | 💼 |
+| 9 | Industry, Innovation, and Infrastructure | 🏗️ |
+| 10 | Reduced Inequalities | ⚖️ |
+| 11 | Sustainable Cities and Communities | 🏙️ |
+| 12 | Responsible Consumption and Production | 🔁 |
+| 13 | Climate Action | 🌍 |
+| 14 | Life Below Water | 🐠 |
+| 15 | Life on Land | 🌳 |
+| 16 | Peace, Justice, and Strong Institutions | 🕊️ |
+| 17 | Partnerships for the Goals | 🤝 |
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+---
 
-## What technologies are used for this project?
+## 🧠 Architecture
 
-This project is built with:
+| Layer | Technology | Description |
+|-------|-------------|-------------|
+| 🎨 **Frontend** | React | UI generation, charts, animations |
+| ⚙️ **Backend** | Flask / FastAPI | APIs, AI insights |
+| 🧠 **AI Engine** | OpenAI GPT / Lovable AI blocks | Generates analysis & summaries |
+| 🗺️ **Map** | Mapbox / Leaflet | Global & regional heatmaps |
+| 📊 **Data** | JSON / CSV (UN SDG Index Dataset) | Country-wise yearly SDG data |
+| ☁️ **Deployment** | Lovable Hosting + Render / Railway | Full-stack hosting |
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+---
 
-## How can I deploy this project?
+## 🧩 Data Sample
 
-Simply open [Lovable](https://lovable.dev/projects/70fbc340-1897-41f7-8e47-5a75a497aff0) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+```json
+{
+  "country": "India",
+  "year": 2023,
+  "sdgs": {
+    "1": 75,
+    "2": 62,
+    "3": 81,
+    "4": 79,
+    "5": 68,
+    "13": 55,
+    "17": 88
+  },
+  "overall_index": 73.5
+}
