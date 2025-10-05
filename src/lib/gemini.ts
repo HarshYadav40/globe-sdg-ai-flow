@@ -36,12 +36,31 @@ export async function queryGemini(prompt: string, context?: string): Promise<str
 }
 
 export async function analyzeSDGData(country: string): Promise<string> {
-  const prompt = `Analyze ${country}'s Sustainable Development Goals (SDG) performance. Provide:
+  const prompt = `Analyze ${country}'s Sustainable Development Goals (SDG) performance. Provide a clear, structured response without using markdown formatting, asterisks, or special characters. Use plain text with numbers and bullet points only:
+
 1. Top 3 strongest SDGs with specific metrics
 2. 2 weakest SDGs with areas of concern
-3. 1 actionable suggestion per weak SDG
+3. 1 actionable suggestion per weak SDG`;
+  
+  return queryGemini(prompt);
+}
 
-Format as a clear, structured response.`;
+export async function getTopPerformingCountries(): Promise<string> {
+  const prompt = `List the top 5 countries performing best on Sustainable Development Goals globally. For each country, provide plain text without markdown:
+- Country name and flag emoji
+- Overall SDG score or ranking
+- 2-3 key achievements
+Keep the response clear and concise in plain text format.`;
+  
+  return queryGemini(prompt);
+}
+
+export async function getLeastProgressingCountries(): Promise<string> {
+  const prompt = `List 5 countries facing the most challenges with Sustainable Development Goals. For each country, provide plain text without markdown:
+- Country name and flag emoji
+- Key SDG challenges
+- 1-2 areas needing urgent attention
+Keep the response clear and concise in plain text format.`;
   
   return queryGemini(prompt);
 }

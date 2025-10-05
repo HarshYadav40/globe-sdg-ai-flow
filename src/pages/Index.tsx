@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { Search, Sparkles, TrendingUp, TrendingDown } from 'lucide-react';
-import { Globe } from '@/components/Globe';
 import { AIChat } from '@/components/AIChat';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { SAMPLE_COUNTRIES, SDG_GOALS, getScoreColor, getScoreStatus } from '@/data/sdgData';
-import { analyzeSDGData } from '@/lib/gemini';
+import { analyzeSDGData, getTopPerformingCountries, getLeastProgressingCountries } from '@/lib/gemini';
 import { toast } from 'sonner';
 
 const Index = () => {
@@ -14,11 +13,14 @@ const Index = () => {
   const [showAIChat, setShowAIChat] = useState(false);
   const [aiInsight, setAiInsight] = useState<string>('');
   const [isLoadingInsight, setIsLoadingInsight] = useState(false);
+  const [performanceData, setPerformanceData] = useState<string>('');
+  const [isLoadingPerformance, setIsLoadingPerformance] = useState(false);
 
   const countryData = SAMPLE_COUNTRIES.find(c => c.name === selectedCountry);
 
   const handleCountrySelect = async (country: string) => {
     setSelectedCountry(country);
+    setPerformanceData('');
     setIsLoadingInsight(true);
     
     try {
@@ -32,34 +34,53 @@ const Index = () => {
     }
   };
 
+  const handleTopPerforming = async () => {
+    setSelectedCountry('');
+    setIsLoadingPerformance(true);
+    try {
+      const data = await getTopPerformingCountries();
+      setPerformanceData(data);
+    } catch (error) {
+      console.error('Failed to get top performing countries:', error);
+      toast.error('Failed to load data');
+    } finally {
+      setIsLoadingPerformance(false);
+    }
+  };
+
+  const handleLeastProgressing = async () => {
+    setSelectedCountry('');
+    setIsLoadingPerformance(true);
+    try {
+      const data = await getLeastProgressingCountries();
+      setPerformanceData(data);
+    } catch (error) {
+      console.error('Failed to get least progressing countries:', error);
+      toast.error('Failed to load data');
+    } finally {
+      setIsLoadingPerformance(false);
+    }
+  };
+
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 right-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse-glow" />
-        <div className="absolute bottom-20 left-20 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: '1s' }} />
-      </div>
+      {/* Content wrapper with higher z-index */}
+      <div className="relative z-10">
+        {/* Hero Section */}
+        <section className="relative pt-20 pb-16">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h1 className="text-6xl md:text-7xl font-bold mb-6 glow-text">
+                🌎 Tracking the world's journey
+              </h1>
+              <p className="text-3xl md:text-4xl text-muted-foreground">
+                to a sustainable future
+              </p>
+            </div>
 
-      {/* Hero Section */}
-      <section className="relative pt-20 pb-32">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h1 className="text-6xl md:text-7xl font-bold mb-6 glow-text">
-              🌎 Tracking the world's journey
-            </h1>
-            <p className="text-3xl md:text-4xl text-muted-foreground">
-              to a sustainable future
-            </p>
-          </div>
-
-          {/* Globe */}
-          <div className="w-full max-w-2xl mx-auto h-[400px] mb-12">
-            <Globe />
-          </div>
-
-          {/* Search & Quick Actions */}
-          <div className="max-w-4xl mx-auto space-y-6">
-            <div className="flex gap-4 items-center">
+            {/* Search & Quick Actions */}
+            <div className="max-w-4xl mx-auto space-y-6">
+              <div className="flex gap-4 items-center">
               <div className="flex-1">
                 <Select value={selectedCountry} onValueChange={handleCountrySelect}>
                   <SelectTrigger className="glass-card h-14 text-lg">
@@ -82,24 +103,61 @@ const Index = () => {
                 <Sparkles className="w-5 h-5 mr-2" />
                 Ask SDG AI
               </Button>
-            </div>
+              </div>
 
-            <div className="flex gap-4 justify-center flex-wrap">
-              <Button variant="secondary" className="glass-card hover-glow">
+              <div className="flex gap-4 justify-center flex-wrap">
+              <Button 
+                variant="secondary" 
+                className="glass-card hover-glow"
+                onClick={handleTopPerforming}
+                disabled={isLoadingPerformance}
+              >
                 <TrendingUp className="w-4 h-4 mr-2" />
                 Top 5 Performing Nations
               </Button>
-              <Button variant="secondary" className="glass-card hover-glow">
+              <Button 
+                variant="secondary" 
+                className="glass-card hover-glow"
+                onClick={handleLeastProgressing}
+                disabled={isLoadingPerformance}
+              >
                 <TrendingDown className="w-4 h-4 mr-2" />
                 Least Progressing
               </Button>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Country Dashboard */}
-      {countryData && (
+        {/* Performance Data Results */}
+        {performanceData && (
+          <section className="relative py-8">
+            <div className="container mx-auto px-4">
+              <div className="glass-card p-8 max-w-4xl mx-auto">
+                <div className="flex items-center gap-2 mb-4">
+                  <Sparkles className="w-5 h-5 text-primary" />
+                  <h3 className="text-2xl font-semibold">Global Performance Insights</h3>
+                </div>
+                <p className="text-foreground/90 whitespace-pre-wrap">{performanceData}</p>
+              </div>
+            </div>
+          </section>
+        )}
+        {isLoadingPerformance && (
+          <section className="relative py-8">
+            <div className="container mx-auto px-4">
+              <div className="glass-card p-8 max-w-4xl mx-auto animate-pulse">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-5 h-5 text-primary animate-spin" />
+                  <span>Analyzing global SDG data...</span>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Country Dashboard */}
+        {countryData && (
         <section className="relative py-16">
           <div className="container mx-auto px-4">
             <div className="glass-card p-8 mb-8">
@@ -169,21 +227,11 @@ const Index = () => {
             </div>
           </div>
         </section>
-      )}
+        )}
 
-      {/* Footer with live ticker */}
-      <footer className="relative py-8 mt-20">
-        <div className="container mx-auto px-4 text-center">
-          <div className="glass-card py-4 px-6 inline-block">
-            <p className="text-sm text-muted-foreground">
-              🟢 SDG Tracker • Live since 2015 • Powered by Gemini AI
-            </p>
-          </div>
-        </div>
-      </footer>
-
-      {/* AI Chat */}
-      {showAIChat && <AIChat onClose={() => setShowAIChat(false)} />}
+        {/* AI Chat */}
+        {showAIChat && <AIChat onClose={() => setShowAIChat(false)} />}
+      </div>
     </div>
   );
 };
